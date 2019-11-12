@@ -17,7 +17,7 @@ class CreateLikesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('post_id');
-            $table->integer('likes');
+            $table->boolean('likes');
             $table->timestamps();
         });
     }
