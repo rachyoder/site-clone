@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Http\Resources\UserCollection;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,10 +11,11 @@ use App\Http\Resources\UserCollection;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/login', 'AuthenticationController@login')->name('login');
 
-Route::get('/user', function() {
-    return UserCollection(User::all);
+Route::middleware('auth:api')->group(function () {
+    Route::get('/logout', 'AuthenticationController@logout')->name('logout');
+    Route::get('/user', function () {
+        return UserResource::collection(User::all()->where('id', 5));
+    });
 });

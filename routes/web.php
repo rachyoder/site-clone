@@ -27,7 +27,5 @@ Route::delete('articles/{id}', 'PostController@delete');
 
 
 Route::get('/user', function() {
-    $users = User::all();
-    $user = $users->find(5);
-    return UserResource::collection(User::all());
+    return UserResource::collection(User::all()->where('id',5));
 });
