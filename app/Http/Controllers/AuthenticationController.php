@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Parser;
 
 use App\User;
@@ -35,5 +36,25 @@ class AuthenticationController extends Controller
 
         $response = 'You have been successfully logged out!';
         return response($response, 200);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' =>'required|min:8'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+
+            $token = $user->createToken('Token has been created')->accessToken;
+            $response = ['token' => $token];
+
+            return response($response, 200);
     }
 }
